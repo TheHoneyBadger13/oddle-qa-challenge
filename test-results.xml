@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="111.057" tests="8" failures="1">
+  <testsuite name="Root Suite" timestamp="2023-03-16T17:50:17" tests="0" file="cypress\e2e\specs\stripe-test.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Stripe Testing" timestamp="2023-03-16T17:50:17" tests="8" time="111.041" failures="1">
+    <testcase name="Stripe Testing Validate Successful payment using a non 3d secure card" time="11.242" classname="Validate Successful payment using a non 3d secure card">
+    </testcase>
+    <testcase name="Stripe Testing Validate quick payments, confirmation via SMS OTP" time="10.016" classname="Validate quick payments, confirmation via SMS OTP">
+    </testcase>
+    <testcase name="Stripe Testing Validate quick payments, confirmation via email OTP" time="11.861" classname="Validate quick payments, confirmation via email OTP">
+    </testcase>
+    <testcase name="Stripe Testing Validate error message for blank fields" time="5.949" classname="Validate error message for blank fields">
+    </testcase>
+    <testcase name="Stripe Testing Validate error message for incorrect input (Phone number has no validation)" time="7.941" classname="Validate error message for incorrect input (Phone number has no validation)">
+    </testcase>
+    <testcase name="Stripe Testing Validate successful payment with 3D secure verification card" time="0.000" classname="Validate successful payment with 3D secure verification card">
+      <failure message="Timed out retrying after 15000ms: Expected to find element: `div.sr-root`, but never found it." type="AssertionError"><![CDATA[AssertionError: Timed out retrying after 15000ms: Expected to find element: `div.sr-root`, but never found it.
+    at Actions.verifySuccess (webpack:///./cypress/e2e/page-actions/actions.js:127:11)
+    at Context.eval (webpack:///./cypress/e2e/specs/stripe-test.cy.js:120:18)]]></failure>
+    </testcase>
+    <testcase name="Stripe Testing Verify error message on failed challenge" time="15.941" classname="Verify error message on failed challenge">
+    </testcase>
+    <testcase name="Stripe Testing Validate successful payment with 3D secure verification using card 4000 0027 6000 3184" time="17.301" classname="Validate successful payment with 3D secure verification using card 4000 0027 6000 3184">
+    </testcase>
+  </testsuite>
+</testsuites>

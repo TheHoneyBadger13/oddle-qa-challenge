@@ -7,10 +7,14 @@ const DROPDOWN_COUNTRY_OR_REGION = '#billingCountry';
 const TICKBOX_ENABLE_STRIPE_PASS = '#enableStripePass';
 const FIELD_PHONE_NUMBER = '#phoneNumber';
 const BUTTON_PAY = '[data-testid = "hosted-payment-submit-button"]';
+const BUTTON_QUICK_PAY = '.SubmitButton-CheckmarkIcon > .Icon > svg > path'
 const BUTTON_COMPLETE = '#test-source-authorize-3ds,button.button-default';
 const ERROR_BLANK_EMAIL = '#required-email-fieldset';
 const ERROR_BLANK_CARD_INFORMATION = '#required-cardNumber-fieldset';
 const ERROR_BLANK_BILLING_NAME = '#required-billingName-fieldset';
+const ERROR_FAIL_CHALLENGE = '.ConfirmPaymentButton-Error';
+const FIELD_OTP_SMS ='[data-testid = "sms-code-input-0"]'
+const LINK_SEND_TO_EMAIL ='.SendEmailOTPButton > div:nth-child(1) > span:nth-child(1) > span:nth-child(1)'
 class Actions {
 
     inputEmail(email) {
@@ -61,17 +65,25 @@ class Actions {
         cy.get(FIELD_PHONE_NUMBER).clear().type(fieldValue);
     }
 
+    inputSmsOTP(){
+       cy.get(FIELD_OTP_SMS,{timeout:10000}).type('123456');
+    }
+
+    clickSendToEmailInstead(){
+      cy.get(LINK_SEND_TO_EMAIL,{timeout:5000}).click();
+    }
+
     clickPay(){
-        cy.get(BUTTON_PAY).click({force:true});
+      cy.get(BUTTON_PAY).click({force:true});
+    }
+
+    clickQuickPay(){
+      cy.get(BUTTON_QUICK_PAY,{timeout:10000}).click();
     }
 
     clickComplete(){
-      //cy.get('iframe[id="challengeFrame"]', {timeout: 10000}).should('exist');
-      //cy.iframe('iframe[id="challengeFrame"]').find('body').should('contain', '3DS Challenge');
-      //cy.get("#iframeid").iframeOnload().find("#challengeFrame").should('be.visible').type("abc") // iframeOnload()
-      //cy.get("#iframeid").iframeDirect().find("#challengeFrame").should('be.visible').click() // iframeDirect()
+      cy.wait(10000);
       
-      cy.wait(7000);
       cy.get('iframe[name^=__privateStripeFrame]')
       .then(($firstIFrame) => {
         cy.wrap($firstIFrame.contents().find('iframe#challengeFrame'))
@@ -82,12 +94,33 @@ class Actions {
             cy.log(target);
           })
       })
-  }
-  
+      
+    }
 
+    clickFail(){
+      cy.wait(5000);
+      cy.get("iframe[name^=__privateStripeFrame]")
+        .its('0.contentDocument')
+        .its('body')
+          .find('iframe#challengeFrame')
+            .its('0.contentDocument')
+            .its('body')
+               .find('#test-source-fail-3ds',{timeout:10000}).click()
+    }
+    
+    clickComplete2(){
+      cy.wait(5000);
+               cy.get("iframe[name^=__privateStripeFrame]")
+               .its('0.contentDocument')
+               .its('body')
+               .find('iframe#challengeFrame')
+               .its('0.contentDocument')
+               .its('body')
+               .find('#test-source-authorize-3ds',{timeout:10000}).click()
+    }
 
     verifySuccess(){
-        cy.get('div.sr-root', {timeout: 100000}).contains('div.sr-root', 'Your test payment succeeded')
+        cy.get('div.sr-root', {timeout: 15000}).contains('div.sr-root', 'Your test payment succeeded')
             .should('be.visible');
     }
 
@@ -105,6 +138,10 @@ class Actions {
       cy.contains('Your card number is invalid').should('be.visible');
     }
 
+    validateFailedChallenge(){
+      cy.contains('We are unable to authenticate your payment method. Please choose a different payment method and try again.').should('be.visible');
+    }
+
     validateInvalidExpiryDate(){
       cy.contains('Your card\'s expiration year is in the past').should('be.visible');
     }
@@ -117,6 +154,7 @@ class Actions {
         const alphabet = 'abcdefghijklmnopqrstuvwxyz';
         const emailLength = Math.floor(Math.random() * 10) + 5; // generates a random email length between 5 and 14
         let email = '';
+        
         for (let i = 0; i < emailLength; i++) {
           email += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
         }

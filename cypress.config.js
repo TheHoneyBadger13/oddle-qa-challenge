@@ -12,6 +12,10 @@ module.exports = defineConfig({
     chromeFlags: [
       "--enable-features=InterestCohortAPI"
     ],
-    blockHosts: ['*google-analytics.com','*fls.doubleclick.net']
+    // JUnit reporter configuration
+    reporter: "mocha-junit-reporter",
+    repoterOptions: {
+      mochaFile: 'junit/test-results.xml'
+    }
   },
 });
