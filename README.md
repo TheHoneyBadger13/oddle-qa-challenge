@@ -25,3 +25,6 @@ Stuck on processing after clicking 'COMPLETE' button in 3D secure 2 (has no issu
 Cypress test runner disappears when redirecting to stripe checkout page. used 'experimentalModifyObstructiveThirdPartyCode' and 'chromeWebSecurity' as work-around
 
 
+#note
+
+Added a handler for email OTP because I thought that the email otp for 1-click checkout needs a valid OTP(already made the handler when i realized that the site accepts any input). I also included it on the spec file (just placed it inside comments), handler file is also included
