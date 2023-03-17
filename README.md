@@ -1,3 +1,9 @@
+Name: Jerome San Juan
+
+Email: romsj13@gmail.com
+
+Platform used for the job application: Linkedin
+
 #How to run test on cypress
 
 run 'npm install cypress on '/oddle-qa-challenge'
